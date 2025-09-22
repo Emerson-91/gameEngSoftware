@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultado Final</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Canvas para fogos -->
+  <canvas id="fireworksCanvas"></canvas>
+
+  <div class="resultado-container">
+    <!-- Coluna esquerda -->
+    <div class="side-col">
+      <img src="{{ url_for('static', filename='img/left.png') }}" alt="Imagem esquerda" class="side-image">
+    </div>
+
+    <!-- Coluna central: card -->
+    <div class="resultado-card">
+      <div class="resultado">
+          <h1>🎉 Parabéns!</h1>
+          <p>Sua vocação na Engenharia de Software será:</p>
+          <h2>{{ vocacao }}</h2>
+          <p>Você provou sua habilidade no jogo. Que tal usar isso na vida real? Torne-se Engenheiro de Software!</p>
+          <a href="/" class="restart-button">🔄 Jogar Novamente</a>
+      </div>
+    </div>
+
+    <!-- Coluna direita -->
+    <div class="side-col">
+      <img src="{{ url_for('static', filename='img/right.png') }}" alt="Imagem direita" class="side-image">
+    </div>
+  </div>
+
+  <!-- Script dos fogos -->
+  <script src="{{ url_for('static', filename='js/fireworks.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase {{ fase }} - Jogo Eng. Software</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+      <!-- Logo Unigran Capital (superior esquerdo) -->
+  <img src="{{ url_for('static', filename='img/logo-capital.png') }}" 
+       alt="Unigran Capital" class="logo-unigran">
+
+  <!-- Logo Engenharia de Software (inferior direito) -->
+  <img src="{{ url_for('static', filename='img/engenharia_logo.png') }}" 
+       alt="Engenharia de Software" class="logo-engenharia">
+
+    <div class="game-area">
+        <h1>Fase {{ fase }}</h1>
+        <canvas id="gameCanvas"></canvas>
+        <div class="game-info">
+          <p>Mova com ← →, pule com ↑. Chegue à porta para avançar de fase e responder ao quiz!</p>
+        </div>
+    </div>
+    
+    <script>
+        const currentLevel = {{ fase|tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>

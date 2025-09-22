@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<htm lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz da Engenharia - Fase {{ fase }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .quiz-button[disabled] {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <img src="{{ url_for('static', filename='img/logo-capital.png') }}" 
+       alt="Unigran Capital" class="logo-unigran">
+  <img src="{{ url_for('static', filename='img/engenharia_logo.png') }}" 
+       alt="Engenharia de Software" class="logo-engenharia">
+
+  <div class="quiz-container">
+    <h1>🤖 Pergunta: (Fase {{ fase }}):</h1>
+    <p class="quiz-question">{{ pergunta.texto }}</p>
+    <form method="post" action="{{ url_for('quiz', fase_quiz_id=fase) }}">
+      {% for chave, opcao in pergunta.opcoes.items() %}
+        <button type="submit" name="resposta" value="{{ chave }}" class="quiz-button" disabled>
+          {{ opcao.label }}
+        </button>
+      {% endfor %}
+    </form>
+    <p id="contador"></p>
+  </div>
+
+  <script>
+    let segundos = 5;
+    const botoes = document.querySelectorAll(".quiz-button");
+    const contador = document.getElementById("contador");
+
+    // Atualiza contador
+    contador.textContent = `Aguarde ${segundos} segundos...`;
+
+    let intervalo = setInterval(() => {
+      segundos--;
+      if (segundos > 0) {
+        contador.textContent = `Aguarde ${segundos} segundos...`;
+      } else {
+        clearInterval(intervalo);
+        contador.textContent = "Agora você pode responder!";
+        botoes.forEach(botao => botao.disabled = false);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

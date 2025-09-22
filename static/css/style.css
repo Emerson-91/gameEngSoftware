@@ -1,0 +1,240 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap');
+
+body {
+    font-family: 'Kanit', sans-serif;
+    background: linear-gradient(135deg, #031841, #001c4b);
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    font-size: 22px;
+    ;
+}
+
+h1 {
+    margin-top: 20px;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: #ffcc00;
+    /* Dourado */
+}
+
+/* Logos fixas */
+.logo-unigran {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    height: 100px;
+    width: auto;
+    z-index: 10;
+}
+
+.logo-engenharia {
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+    height: 100px;
+    width: auto;
+    z-index: 10;
+}
+
+/* Container principal para index e resultados */
+.container,
+.resultado,
+.quiz-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px 40px;
+    margin: 20px auto;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 700px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.container p,
+.quiz-question {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Estilo para botões gerais (iniciar, quiz, reiniciar) */
+.start-button,
+.quiz-button,
+.restart-button {
+    background: #ff9800;
+    /* Laranja */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    /* Para links */
+    display: inline-block;
+    /* Para que margin funcione em links */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.start-button:hover,
+.quiz-button:hover,
+.restart-button:hover {
+    background: #e68900;
+    /* Laranja mais escuro */
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Canvas do jogo */
+canvas {
+    background: #1a1a1a;
+    /* Fundo mais escuro para o jogo */
+    display: block;
+    margin: 20px auto;
+    border: 3px solid #ffcc00;
+    /* Borda dourada */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+    /* Brilho na borda */
+}
+
+.game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.game-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+/* Resultados */
+.resultado h2 {
+    font-size: 2.5rem;
+    color: #00e676;
+    /* Verde vibrante */
+    margin-top: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .container,
+    .resultado,
+    .quiz-container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .start-button,
+    .quiz-button,
+    .restart-button {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+
+    canvas {
+        width: 100%;
+        /* Adapta a largura do canvas */
+        height: auto;
+        /* Mantém a proporção */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .container p,
+    .quiz-question {
+        font-size: 1rem;
+    }
+
+    .resultado h2 {
+        font-size: 2rem;
+    }
+}
+
+
+/* Container central com imagens e resultado */
+.resultado-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.side-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-image {
+    height: 60vh;
+    /* 60% da altura da tela */
+    width: auto;
+}
+
+/* Central col card mantém todo estilo existente */
+.resultado {
+    max-width: 500px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .resultado-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .side-image {
+        height: 40vh;
+    }
+}
+
+
+
+
+/* Canvas dos fogos */
+#fireworksCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    /* atrás de todo conteúdo */
+    pointer-events: none;
+    /* não bloqueia clique */
+}
+
+.resultado-container {
+    position: relative;
+    z-index: 1;
+    /* acima do canvas */
+}
