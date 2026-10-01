@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap');
 
 body {
     font-family: 'Kanit', sans-serif;
@@ -84,6 +84,25 @@ h1 {
     display: inline-block;
     /* Para que margin funcione em links */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#quizOpcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+#quizOpcoes .quiz-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 16px 22px;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    border-left: 5px solid #ffcc00;
 }
 
 .start-button:hover,
@@ -237,4 +256,31 @@ canvas {
     position: relative;
     z-index: 1;
     /* acima do canvas */
+}
+
+/* Botão de Som Mute/Unmute */
+.mute-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(3, 24, 65, 0.85);
+    color: #ffcc00;
+    border: 2px solid #ffcc00;
+    padding: 10px 18px;
+    font-size: 1rem;
+    font-family: 'Kanit', sans-serif;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.mute-button:hover {
+    background: #ffcc00;
+    color: #031841;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(255, 204, 0, 0.4);
 }
