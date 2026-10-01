@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resultado Final</title>
+  <title>Resultado Final - Jogo Eng. Software</title>
+  
+  <!-- Estilos Globais -->
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Canvas para fogos -->
+  <!-- Canvas de Animação de Fogos de Artifício (Fundo) -->
   <canvas id="fireworksCanvas"></canvas>
 
+  <!-- Container Principal da Tela de Resultado -->
   <div class="resultado-container">
-    <!-- Coluna esquerda -->
+    <!-- Imagem Lateral Esquerda -->
     <div class="side-col">
-      <img src="img/left.png" alt="Imagem esquerda" class="side-image">
+      <img src="img/left.png" alt="Ilustração Estudante" class="side-image">
     </div>
 
-    <!-- Coluna central: card -->
+    <!-- Card Central de Resultado Vocacional -->
     <div class="resultado-card">
       <div class="resultado">
           <h1>Parabéns!</h1>
@@ -28,16 +31,15 @@
       </div>
     </div>
 
-    <!-- Coluna direita -->
+    <!-- Imagem Lateral Direita -->
     <div class="side-col">
-      <img src="img/right.png" alt="Imagem direita" class="side-image">
+      <img src="img/right.png" alt="Ilustração Estudante" class="side-image">
     </div>
   </div>
 
+  <!-- Scripts de Áudio, Animação de Fogos e Cálculo de Resultado -->
   <script src="js/audio.js"></script>
-  <!-- Script dos fogos -->
   <script src="js/fireworks.js"></script>
-  <!-- Script de cálculo da vocação -->
   <script src="js/resultado.js"></script>
 </body>
 </html>

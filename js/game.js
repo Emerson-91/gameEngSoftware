@@ -1,14 +1,15 @@
-// --- Configurações do Canvas ---
-let canvas = document.getElementById("gameCanvas");
-let ctx = canvas.getContext("2d");
+// Configurações do Canvas
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = 500;
 
-// --- Estado do Jogo ---
-let keys = {};
-let groundY = 450;
+// Estado do Jogo
+const keys = {};
+const groundY = 450;
 
-let player = {
+// Jogador (Física e Movimento)
+const player = {
     x: 80,
     y: groundY - 90,
     width: 74,
@@ -23,15 +24,14 @@ let player = {
 let isMoving = false;
 let playerDirection = "right";
 
-// Elementos da fase
+// Elementos da Fase
 let obstacles = [];
 let platforms = [];
 let enemies = [];
 
-// Portal
-let portal = { x: 1100, y: 380, width: 80, height: 90, color: "red" };
+const portal = { x: 1100, y: 380, width: 80, height: 90, color: "red" };
 
-// --- Fundos ---
+// Fundos das Fases (1 a 4)
 const backgrounds = {
     fase1: new Image(),
     fase2: new Image(),
@@ -45,7 +45,7 @@ backgrounds.fase4.src = "img/fase4_bg.png";
 
 let currentBackground = null;
 
-// --- Assets ---
+// Assets do Personagem e Objetos
 const assets = {
     player_parado: new Image(),
     player_correndo1: new Image(),
@@ -63,7 +63,6 @@ const assets = {
     collision: new Image()
 };
 
-// Caminhos dos assets
 assets.player_parado.src = "img/parado.png";
 assets.player_correndo1.src = "img/correndo1.png";
 assets.player_correndo2.src = "img/correndo2.png";
@@ -79,7 +78,6 @@ assets.bird3.src = "img/bird3.png";
 assets.bird4.src = "img/bird4.png";
 assets.collision.src = "img/collision.png";
 
-// --- Contagem de Assets ---
 let assetsLoaded = 0;
 const totalAssets = Object.keys(assets).length + Object.keys(backgrounds).length;
 
@@ -100,32 +98,45 @@ for (let key in backgrounds) {
     backgrounds[key].onerror = assetLoaded;
 }
 
-// --- Colisão com Animação ---
+// Colisão e Animação de Impacto
 let isColliding = false;
-let collisionPoint = { x: 0, y: 0, width: 100, height: 100 };
+const collisionPoint = { x: 0, y: 0, width: 100, height: 100 };
 
 function handleCollision(x, y) {
     if (isColliding) return;
     isColliding = true;
     collisionPoint.x = x - 20;
     collisionPoint.y = y - 20;
+
     if (typeof audioManager !== "undefined") {
         audioManager.playCollisionSound();
     }
+    
     setTimeout(() => {
         window.location.reload();
     }, 450);
 }
 
-// --- Fases ---
+function checkCollision(obj1, obj2) {
+    return (
+        obj1.x < obj2.x + obj2.width &&
+        obj1.x + obj1.width > obj2.x &&
+        obj1.y < obj2.y + obj2.height &&
+        obj1.y + obj1.height > obj2.y
+    );
+}
+
+// Carregamento das Fases (1 a 4)
 function loadLevel(level) {
     isColliding = false;
     obstacles = [];
     platforms = [];
     enemies = [];
+
     if (typeof audioManager !== "undefined") {
         audioManager.startLevelMusic(level);
     }
+
     player.x = 50;
     player.y = groundY - player.height;
     player.velY = 0;
@@ -141,8 +152,7 @@ function loadLevel(level) {
 
     function addBird(x, y) {
         enemies.push({
-            x,
-            y,
+            x, y,
             width: 40,
             height: 40,
             frames: [assets.bird1, assets.bird2, assets.bird3, assets.bird4],
@@ -203,22 +213,12 @@ function loadLevel(level) {
     }
 }
 
-// --- Teclado ---
+// Teclado
 document.addEventListener("keydown", e => keys[e.code] = true);
 document.addEventListener("keyup", e => keys[e.code] = false);
 
-// --- Colisão ---
-function checkCollision(obj1, obj2) {
-    return (
-        obj1.x < obj2.x + obj2.width &&
-        obj1.x + obj1.width > obj2.x &&
-        obj1.y < obj2.y + obj2.height &&
-        obj1.y + obj1.height > obj2.y
-    );
-}
-
-// --- Partículas dos Passos do Personagem ---
-let stepParticles = [];
+// Partículas de Poeira
+const stepParticles = [];
 
 function createStepParticles(x, y, count = 2) {
     for (let i = 0; i < count; i++) {
@@ -258,7 +258,7 @@ function drawStepParticles() {
     });
 }
 
-// --- Update ---
+// Atualização Física e Lógica
 const obstacleFrameDelay = 30;
 let wasOnGround = false;
 let frameIndex = 0;
@@ -272,15 +272,24 @@ function update(dt) {
     isMoving = false;
     player.onGround = false;
 
-    // Movimentação do jogador com dt
+    // Movimentação Horizontal (Teclas ← e →)
     let moveDist = player.speed * dt;
-    if (keys["ArrowRight"]) { player.x += moveDist; isMoving = true; playerDirection = "right"; }
-    if (keys["ArrowLeft"]) { player.x -= moveDist; isMoving = true; playerDirection = "left"; }
+    if (keys["ArrowRight"]) { 
+        player.x += moveDist; 
+        isMoving = true; 
+        playerDirection = "right"; 
+    }
+    if (keys["ArrowLeft"]) { 
+        player.x -= moveDist; 
+        isMoving = true; 
+        playerDirection = "left"; 
+    }
     player.x = Math.max(0, Math.min(player.x, canvas.width - player.width));
 
-    // Gravidade e pulo com dt
+    // Gravidade
     player.y += player.velY * dt;
     player.velY += player.gravity * dt;
+
     if (player.y + player.height >= groundY) {
         player.y = groundY - player.height;
         player.velY = 0;
@@ -289,7 +298,9 @@ function update(dt) {
 
     // Plataformas
     platforms.forEach(p => {
-        if (player.velY >= 0 && player.x + player.width > p.x && player.x < p.x + p.width &&
+        if (player.velY >= 0 && 
+            player.x + player.width > p.x && 
+            player.x < p.x + p.width &&
             player.y + player.height <= p.y + 6 &&
             player.y + player.height + player.velY * dt >= p.y) {
             player.y = p.y - player.height;
@@ -298,7 +309,6 @@ function update(dt) {
         }
     });
 
-    // Detectar aterrissagem (som de passo/pouso + poeira)
     if (!wasOnGround && player.onGround) {
         if (typeof audioManager !== "undefined") {
             audioManager.playStepSound();
@@ -306,7 +316,6 @@ function update(dt) {
         createStepParticles(player.x + player.width / 2, player.y + player.height, 5);
     }
 
-    // Animação e som dos passos ao caminhar/correr
     if (isMoving && player.onGround) {
         frameTimer += dt;
         if (frameTimer >= frameDelay) {
@@ -322,9 +331,9 @@ function update(dt) {
         frameTimer = 0;
     }
 
-    // Atualiza poeira dos passos
     updateStepParticles(dt);
 
+    // Pulo (Tecla ↑)
     if (keys["ArrowUp"] && player.onGround) {
         player.velY = player.jumpStrength;
         if (typeof audioManager !== "undefined") {
@@ -346,26 +355,24 @@ function update(dt) {
         }
     });
 
-    // Enemies (birds)
+    // Inimigos Voadores
     enemies.forEach(enemy => {
         if (checkCollision(player, enemy)) {
             handleCollision(enemy.x, enemy.y);
         }
 
-        // Animação
         enemy.frameTimer += dt;
         if (enemy.frameTimer >= 10) {
             enemy.frameIndex = (enemy.frameIndex + 1) % enemy.frames.length;
             enemy.frameTimer = 0;
         }
 
-        // Movimento vertical com dt
         enemy.y += enemy.directionY * 1.5 * dt;
         if (enemy.y <= 150) enemy.directionY = 1;
         if (enemy.y >= groundY - enemy.height - 50) enemy.directionY = -1;
     });
 
-    // Portal
+    // Portal de Saída
     if (checkCollision(player, portal)) {
         if (typeof audioManager !== "undefined") {
             audioManager.playPortalSound();
@@ -375,21 +382,28 @@ function update(dt) {
     }
 }
 
-// --- Draw ---
+// Renderização
 function drawPlayer() {
     let img;
     if (isMoving) {
         img = (playerDirection === "right")
             ? (frameIndex === 0 ? assets.player_correndo1 : assets.player_correndo2)
             : (frameIndex === 0 ? assets.player_correndo_atras1 : assets.player_correndo_atras2);
-    } else { img = assets.player_parado; }
+    } else { 
+        img = assets.player_parado; 
+    }
 
-    if (img.complete) ctx.drawImage(img, player.x, player.y, player.width, player.height);
-    else { ctx.fillStyle = isMoving ? "green" : "blue"; ctx.fillRect(player.x, player.y, player.width, player.height); }
+    if (img.complete) {
+        ctx.drawImage(img, player.x, player.y, player.width, player.height);
+    } else {
+        ctx.fillStyle = isMoving ? "green" : "blue";
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     if (currentBackground && currentBackground.complete && currentBackground.naturalWidth !== 0) {
         ctx.drawImage(currentBackground, 0, 0, canvas.width, canvas.height);
     } else {
@@ -408,25 +422,25 @@ function draw() {
 
     platforms.forEach(p => {
         if (assets.platform.complete) ctx.drawImage(assets.platform, p.x, p.y, p.width, p.height);
-        else ctx.fillStyle = "gray", ctx.fillRect(p.x, p.y, p.width, p.height);
+        else { ctx.fillStyle = "gray"; ctx.fillRect(p.x, p.y, p.width, p.height); }
     });
 
     obstacles.forEach(obs => {
         let img = (obs.frameIndex === 0) ? assets.obstacle : assets.obstacle1;
         if (img.complete) ctx.drawImage(img, obs.x, obs.y, obs.width, obs.height);
-        else ctx.fillStyle = "brown", ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+        else { ctx.fillStyle = "brown"; ctx.fillRect(obs.x, obs.y, obs.width, obs.height); }
     });
 
     enemies.forEach(enemy => {
         if (enemy.frames && enemy.frames.length > 0) {
             let img = enemy.frames[enemy.frameIndex];
             if (img.complete) ctx.drawImage(img, enemy.x, enemy.y, enemy.width, enemy.height);
-            else ctx.fillStyle = "orange", ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            else { ctx.fillStyle = "orange"; ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height); }
         }
     });
 
     if (assets.portal.complete) ctx.drawImage(assets.portal, portal.x, portal.y, portal.width, portal.height);
-    else ctx.fillStyle = portal.color, ctx.fillRect(portal.x, portal.y, portal.width, portal.height);
+    else { ctx.fillStyle = portal.color; ctx.fillRect(portal.x, portal.y, portal.width, portal.height); }
 
     // Efeito de Colisão POW!
     if (isColliding) {
@@ -440,7 +454,7 @@ function draw() {
     }
 }
 
-// --- Loop com Delta Time (Normalizado para 60 FPS) ---
+// Game Loop (60 FPS)
 let lastTimestamp = 0;
 
 function gameLoop(timestamp) {

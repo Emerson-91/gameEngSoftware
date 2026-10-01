@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo Eng. Software</title>
+    
+    <!-- Estilos Globais -->
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Logo Unigran Capital (superior esquerdo) -->
-  <img src="img/logo-capital.png" 
-       alt="Unigran Capital" class="logo-unigran">
+    <!-- Logos Institucionais Fixas -->
+    <img src="img/logo-capital.png" alt="Unigran Capital" class="logo-unigran">
+    <img src="img/engenharia_logo.png" alt="Engenharia de Software" class="logo-engenharia">
 
-  <!-- Logo Engenharia de Software (inferior direito) -->
-  <img src="img/engenharia_logo.png" 
-       alt="Engenharia de Software" class="logo-engenharia">
-
+    <!-- Container da Área de Jogo Canvas 2D -->
     <div class="game-area">
         <h1 id="faseTitulo">Fase 1</h1>
         <canvas id="gameCanvas"></canvas>
@@ -24,12 +23,15 @@
         </div>
     </div>
     
+    <!-- Leitura da Fase Atual da URL -->
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const currentLevel = parseInt(urlParams.get("fase")) || 1;
         document.getElementById("faseTitulo").innerText = `Fase ${currentLevel}`;
         document.title = `Fase ${currentLevel} - Jogo Eng. Software`;
     </script>
+    
+    <!-- Scripts de Lógica de Áudio e Motor do Jogo -->
     <script src="js/audio.js"></script>
     <script src="js/game.js"></script>
 </body>

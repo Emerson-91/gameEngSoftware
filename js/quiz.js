@@ -1,3 +1,4 @@
+// Perguntas e Opções do Quiz por Fase
 const perguntasQuiz = [
     {
         id: 1,
@@ -41,9 +42,10 @@ const perguntasQuiz = [
     }
 ];
 
+// Fase Atual e Pergunta
 const TOTAL_FASES_JOGO = 4;
 const urlParams = new URLSearchParams(window.location.search);
-let faseQuizId = parseInt(urlParams.get("fase")) || 1;
+const faseQuizId = parseInt(urlParams.get("fase")) || 1;
 
 if (faseQuizId < 1 || faseQuizId > TOTAL_FASES_JOGO) {
     window.location.href = "resultado.html";
@@ -68,10 +70,12 @@ if (pergunta) {
     });
 }
 
+// Salva a Resposta e Avança
 function responder(valor) {
     if (typeof audioManager !== "undefined") {
         audioManager.playClickSound();
     }
+
     let skills = JSON.parse(localStorage.getItem("skills")) || {};
     skills[valor] = (skills[valor] || 0) + 1;
     localStorage.setItem("skills", JSON.stringify(skills));

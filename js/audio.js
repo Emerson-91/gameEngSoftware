@@ -1,5 +1,4 @@
-// --- Sistema de Áudio Retro (Volume Aumentado & Alta Qualidade) ---
-
+// Gerenciador de Áudio (Web Audio API)
 class AudioManager {
     constructor() {
         this.ctx = null;
@@ -9,32 +8,27 @@ class AudioManager {
         this.currentLevel = 1;
         this.musicInterval = null;
         this.noteIndex = 0;
+        this.stepToggle = false;
 
-        // Frequências para notas musicais por fase (Hz)
+        // Notas musicais da melodia (fases 1 a 4)
         this.scales = {
             1: [261.63, 329.63, 392.00, 523.25, 392.00, 329.63, 261.63, 392.00],
             2: [293.66, 349.23, 440.00, 587.33, 440.00, 349.23, 293.66, 440.00],
             3: [329.63, 392.00, 493.88, 659.25, 493.88, 392.00, 329.63, 493.88],
-            4: [349.23, 440.00, 523.25, 698.46, 523.25, 440.00, 349.23, 523.25],
-            5: [392.00, 493.88, 587.33, 783.99, 587.33, 493.88, 392.00, 587.33],
-            6: [440.00, 523.25, 659.25, 880.00, 659.25, 523.25, 440.00, 659.25],
-            7: [493.88, 587.33, 698.46, 987.77, 698.46, 587.33, 493.88, 698.46],
-            8: [523.25, 659.25, 783.99, 1046.50, 783.99, 659.25, 523.25, 783.99]
+            4: [349.23, 440.00, 523.25, 698.46, 523.25, 440.00, 349.23, 523.25]
         };
 
+        // Notas do contrabaixo (fases 1 a 4)
         this.basslines = {
             1: [130.81, 130.81, 164.81, 196.00],
             2: [146.83, 146.83, 174.61, 220.00],
             3: [164.81, 164.81, 196.00, 246.94],
-            4: [174.61, 174.61, 220.00, 261.63],
-            5: [196.00, 196.00, 246.94, 293.66],
-            6: [220.00, 220.00, 261.63, 329.63],
-            7: [246.94, 246.94, 293.66, 349.23],
-            8: [261.63, 261.63, 329.63, 392.00]
+            4: [174.61, 174.61, 220.00, 261.63]
         };
 
+        // Tempos das notas (ms)
         this.tempos = {
-            1: 180, 2: 170, 3: 160, 4: 150, 5: 140, 6: 130, 7: 120, 8: 110
+            1: 180, 2: 170, 3: 160, 4: 150
         };
 
         this.setupMuteUI();
@@ -67,7 +61,7 @@ class AudioManager {
         });
     }
 
-    // Toca tom com volume mais alto e limpo
+    // Gerador de Som por Oscilador
     playTone(freq, duration, type = "square", volume = 0.15) {
         if (this.isMuted || !this.ctx) return;
         try {
@@ -96,14 +90,12 @@ class AudioManager {
         } catch (e) {}
     }
 
-    // Som de passos do personagem ao caminhar/correr
+    // Efeitos Sonoros
     playStepSound() {
         if (this.isMuted || !this.ctx) return;
         this.ensureContextRunning();
         try {
             const now = this.ctx.currentTime;
-            
-            // Alterna levemente o tom a cada passo (pé esquerdo e pé direito)
             this.stepToggle = !this.stepToggle;
             const freq = this.stepToggle ? 130 : 110;
 
@@ -129,7 +121,6 @@ class AudioManager {
         } catch (e) {}
     }
 
-    // Som de pulo do jogador
     playJumpSound() {
         if (this.isMuted) return;
         this.ensureContextRunning();
@@ -157,7 +148,6 @@ class AudioManager {
         } catch (e) {}
     }
 
-    // Som de colisão (POW!)
     playCollisionSound() {
         if (this.isMuted) return;
         this.ensureContextRunning();
@@ -185,7 +175,6 @@ class AudioManager {
         } catch (e) {}
     }
 
-    // Som de portal/vitória da fase
     playPortalSound() {
         if (this.isMuted) return;
         this.ensureContextRunning();
@@ -197,14 +186,12 @@ class AudioManager {
         });
     }
 
-    // Som de clique nos botões
     playClickSound() {
         if (this.isMuted) return;
         this.ensureContextRunning();
         this.playTone(523.25, 0.08, "sine", 0.2);
     }
 
-    // Fanfarra de vitória
     playVictorySound() {
         if (this.isMuted) return;
         this.ensureContextRunning();
@@ -223,7 +210,7 @@ class AudioManager {
         });
     }
 
-    // Toca música de fundo da fase
+    // Música de Fundo Sintetizada
     startLevelMusic(level) {
         this.currentLevel = Math.max(1, Math.min(4, level));
         this.stopMusic();
@@ -241,11 +228,9 @@ class AudioManager {
         this.musicInterval = setInterval(() => {
             if (this.isMuted || !this.isPlaying || !this.ctx) return;
             
-            // Melodia
             const mNote = melody[this.noteIndex % melody.length];
             this.playTone(mNote, 0.1, "square", 0.12);
 
-            // Baixo
             if (this.noteIndex % 2 === 0) {
                 const bNote = bass[Math.floor(this.noteIndex / 2) % bass.length];
                 this.playTone(bNote, 0.16, "triangle", 0.18);
@@ -263,6 +248,7 @@ class AudioManager {
         }
     }
 
+    // Controle de Som (Mute)
     toggleMute() {
         this.isMuted = !this.isMuted;
         localStorage.setItem("gameMusicMuted", this.isMuted);
@@ -305,5 +291,4 @@ class AudioManager {
     }
 }
 
-// Instância global do gerenciador de áudio
 const audioManager = new AudioManager();

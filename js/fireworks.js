@@ -1,4 +1,5 @@
-﻿const canvas = document.getElementById("fireworksCanvas");
+// Animação de Fogos de Artifício
+const canvas = document.getElementById("fireworksCanvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
@@ -27,12 +28,13 @@ class Particle {
     }
 
     draw() {
-        ctx.globalAlpha = this.alpha;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.alpha);
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
-        ctx.globalAlpha = 1;
+        ctx.restore();
     }
 }
 
@@ -50,18 +52,20 @@ function spawnFirework() {
 }
 
 function animate() {
-    ctx.fillStyle = "rgba(37, 0, 122, 0.2)";
+    ctx.fillStyle = "rgba(3, 24, 65, 0.2)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    particles.forEach((p, index) => {
+    for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
         p.update();
         p.draw();
-        if (p.alpha <= 0) particles.splice(index, 1);
-    });
+        if (p.alpha <= 0) {
+            particles.splice(i, 1);
+        }
+    }
 
     requestAnimationFrame(animate);
 }
 
-// Spawn contínuo de fogos
 setInterval(spawnFirework, 1000);
 animate();

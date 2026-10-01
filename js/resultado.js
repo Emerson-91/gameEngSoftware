@@ -1,3 +1,4 @@
+// Mapeamento de Carreiras
 const mapeamentoVocacao = {
     "desenvolvimento": "Desenvolvimento Fullstack e Mobile",
     "programacao": "Desenvolvimento Fullstack e Mobile",
@@ -13,6 +14,7 @@ const mapeamentoVocacao = {
     "arquitetura": "Arquitetura de Software e Sistemas Distribuídos"
 };
 
+// Cálculo do Resultado
 const skills = JSON.parse(localStorage.getItem("skills")) || {};
 let vocacao = "Jogue para descobrir sua vocação em Engenharia de Software!";
 
@@ -29,6 +31,7 @@ if (valores.length > 0) {
     }
 }
 
+// Exibe Resultado e Toca Som
 const el = document.getElementById("vocacaoResultado");
 if (el) {
     el.innerText = vocacao;

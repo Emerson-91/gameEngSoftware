@@ -4,36 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jogo de Engenharia de Software</title>
+  
+  <!-- Estilos e Fontes do Projeto -->
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Logo Unigran Capital (superior esquerdo) -->
-  <img src="img/logo-capital.png" 
-       alt="Unigran Capital" class="logo-unigran">
+  <!-- Identificação de Marcas (Logos de Canto) -->
+  <img src="img/logo-capital.png" alt="Unigran Capital" class="logo-unigran">
+  <img src="img/engenharia_logo.png" alt="Engenharia de Software" class="logo-engenharia">
 
-  <!-- Logo Engenharia de Software (inferior direito) -->
-  <img src="img/engenharia_logo.png" 
-       alt="Engenharia de Software" class="logo-engenharia">
-
+  <!-- Tela Inicial / Card de Boas-Vindas -->
   <div class="container">
     <h1>Jogo de Engenharia de Software</h1>
     <p>Entre nessa aventura! Passe as fases, encare o quiz e descubra onde você se encaixa no mundo da Engenharia de Software.</p>
     <button id="btnIniciar" class="start-button">Iniciar Jogo</button>
   </div>
 
+  <!-- Gerenciador de Áudio -->
   <script src="js/audio.js"></script>
+  
+  <!-- Script de Inicialização do Jogo e Reset de Pontuação -->
   <script>
     document.getElementById("btnIniciar").addEventListener("click", function() {
       if (typeof audioManager !== "undefined") {
         audioManager.playClickSound();
       }
+      
+      // Reseta os pontos de vocação acumulados no localStorage ao iniciar novo jogo
       const skills = {
         seguranca: 0, gestao: 0, ia: 0, cloud: 0, devops: 0,
         dados: 0, programacao: 0, analise_dados: 0, desenvolvimento: 0,
         qa_testing: 0, ux_ui: 0, arquitetura: 0
       };
       localStorage.setItem("skills", JSON.stringify(skills));
+
+      // Inicia o jogo na Fase 1
       setTimeout(() => {
         window.location.href = "game.html?fase=1";
       }, 150);

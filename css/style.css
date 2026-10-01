@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap');
 
+/* Estilos Globais */
 body {
     font-family: 'Kanit', sans-serif;
     background: linear-gradient(135deg, #031841, #001c4b);
@@ -13,7 +14,6 @@ body {
     min-height: 100vh;
     flex-direction: column;
     font-size: 22px;
-    ;
 }
 
 h1 {
@@ -21,10 +21,9 @@ h1 {
     font-size: 2.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     color: #ffcc00;
-    /* Dourado */
 }
 
-/* Logos fixas */
+/* Logos Fixas */
 .logo-unigran {
     position: fixed;
     top: 15px;
@@ -43,7 +42,7 @@ h1 {
     z-index: 10;
 }
 
-/* Container principal para index e resultados */
+/* Cards Principais */
 .container,
 .resultado,
 .quiz-container {
@@ -64,12 +63,11 @@ h1 {
     margin-bottom: 25px;
 }
 
-/* Estilo para botões gerais (iniciar, quiz, reiniciar) */
+/* Botões */
 .start-button,
 .quiz-button,
 .restart-button {
     background: #ff9800;
-    /* Laranja */
     color: white;
     border: none;
     padding: 15px 30px;
@@ -80,12 +78,19 @@ h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    /* Para links */
     display: inline-block;
-    /* Para que margin funcione em links */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+.start-button:hover,
+.quiz-button:hover,
+.restart-button:hover {
+    background: #e68900;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Opções do Quiz */
 #quizOpcoes {
     display: flex;
     flex-direction: column;
@@ -105,26 +110,14 @@ h1 {
     border-left: 5px solid #ffcc00;
 }
 
-.start-button:hover,
-.quiz-button:hover,
-.restart-button:hover {
-    background: #e68900;
-    /* Laranja mais escuro */
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-}
-
-/* Canvas do jogo */
+/* Canvas do Jogo */
 canvas {
     background: #1a1a1a;
-    /* Fundo mais escuro para o jogo */
     display: block;
     margin: 20px auto;
     border: 3px solid #ffcc00;
-    /* Borda dourada */
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
-    /* Brilho na borda */
 }
 
 .game-area {
@@ -143,60 +136,14 @@ canvas {
     color: #ccc;
 }
 
-/* Resultados */
+/* Tela de Resultado */
 .resultado h2 {
     font-size: 2.5rem;
     color: #00e676;
-    /* Verde vibrante */
     margin-top: 20px;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 2rem;
-    }
-
-    .container,
-    .resultado,
-    .quiz-container {
-        width: 95%;
-        padding: 20px;
-    }
-
-    .start-button,
-    .quiz-button,
-    .restart-button {
-        padding: 12px 25px;
-        font-size: 1rem;
-    }
-
-    canvas {
-        width: 100%;
-        /* Adapta a largura do canvas */
-        height: auto;
-        /* Mantém a proporção */
-    }
-}
-
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.8rem;
-    }
-
-    .container p,
-    .quiz-question {
-        font-size: 1rem;
-    }
-
-    .resultado h2 {
-        font-size: 2rem;
-    }
-}
-
-
-/* Container central com imagens e resultado */
 .resultado-container {
     display: flex;
     justify-content: center;
@@ -205,6 +152,8 @@ canvas {
     padding: 20px;
     height: 100vh;
     box-sizing: border-box;
+    position: relative;
+    z-index: 1;
 }
 
 .side-col {
@@ -215,31 +164,13 @@ canvas {
 
 .side-image {
     height: 60vh;
-    /* 60% da altura da tela */
     width: auto;
 }
 
-/* Central col card mantém todo estilo existente */
 .resultado {
     max-width: 500px;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .resultado-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .side-image {
-        height: 40vh;
-    }
-}
-
-
-
-
-/* Canvas dos fogos */
 #fireworksCanvas {
     position: fixed;
     top: 0;
@@ -247,18 +178,10 @@ canvas {
     width: 100%;
     height: 100%;
     z-index: 0;
-    /* atrás de todo conteúdo */
     pointer-events: none;
-    /* não bloqueia clique */
 }
 
-.resultado-container {
-    position: relative;
-    z-index: 1;
-    /* acima do canvas */
-}
-
-/* Botão de Som Mute/Unmute */
+/* Botão de Som */
 .mute-button {
     position: fixed;
     top: 20px;
@@ -283,4 +206,54 @@ canvas {
     color: #031841;
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 16px rgba(255, 204, 0, 0.4);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .container,
+    .resultado,
+    .quiz-container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .start-button,
+    .quiz-button,
+    .restart-button {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+
+    canvas {
+        width: 100%;
+        height: auto;
+    }
+
+    .resultado-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .side-image {
+        height: 40vh;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .container p,
+    .quiz-question {
+        font-size: 1rem;
+    }
+
+    .resultado h2 {
+        font-size: 2rem;
+    }
 }
